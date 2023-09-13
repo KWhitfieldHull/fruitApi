@@ -54,7 +54,7 @@ app.get('/fruits/:name', (req, res) => {
 
 app.post("/fruits", (req, res) => {
     const fi = getFruitIndex(req.body.name.toLowerCase())
-
+console.log("Working")
     if (fi > -1) {
         res.status(409).send("The fruit already exists")
     } else {
@@ -65,9 +65,6 @@ app.post("/fruits", (req, res) => {
         maxId++
 
         req.body.id = maxId
-
-
-
 
         fruits.push(req.body)
         res.status(201).send(req.body)
