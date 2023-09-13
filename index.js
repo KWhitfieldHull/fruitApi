@@ -53,21 +53,39 @@ app.get('/fruits/:name', (req, res) => {
 })
 
 app.post("/fruits", (req, res) => {
-    const fi = getFruitIndex(req.body.name.toLowerCase())
-console.log("Working")
-    if (fi > -1) {
-        res.status(409).send("The fruit already exists")
+    //     const fi = getFruitIndex(req.body.name.toLowerCase())
+    // console.log("Working")
+    //     if (fi > -1) {
+    //         res.status(409).send("The fruit already exists")
+    //     } else {
+
+    //         const ids = fruits.map((fruit) => fruit.id)
+
+    //         let maxId = Math.max(...ids)
+    //         maxId++
+
+    //         req.body.id = maxId
+
+    //         fruits.push(req.body)
+    //         res.status(201).send(req.body)
+    //     }
+
+    const fruit = fruits.find((fruit) => fruit.name.toLowerCase() == req.body.name.toLowerCase());
+
+    if (fruit != undefined) {
+        // fruit already exists -> conflict response code returned
+        res.status(409).send("The fruit already exists.");
     } else {
+        // fruit does not already exist. Increment the maxId and add it to
+        // the data sent to the server by the user
+        maxId += 1;
+        req.body.id = maxId;
 
-        const ids = fruits.map((fruit) => fruit.id)
+        // add the fruit to the list of fruits
+        fruits.push(req.body);
 
-        let maxId = Math.max(...ids)
-        maxId++
-
-        req.body.id = maxId
-
-        fruits.push(req.body)
-        res.status(201).send(req.body)
+        // Return successfully created status code
+        res.status(201).send(req.body);
     }
 })
 
